@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Customers - PayDesk{% endblock %}
+
+{% block page_title %}Customers{% endblock %}
+
+{% block content %}
+<div class="section">
+    <div class="section-header">
+        <h3>All Customers</h3>
+        <form method="get" class="search-form">
+            <input type="text" name="search" placeholder="Search customers..." value="{{ search_query }}">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+
+    {% if customers %}
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Customer ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Amount</th>
+                    <th>Currency</th>
+                    <th>Payment Status</th>
+                    <th>Created Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in customers %}
+                <tr>
+                    <td>{{ customer.customer_id }}</td>
+                    <td>{{ customer.name }}</td>
+                    <td>{{ customer.email }}</td>
+                    <td>{{ customer.phone|default:"-" }}</td>
+                    <td>{{ customer.payment_amount }}</td>
+                    <td>{{ customer.currency }}</td>
+                    <td>{{ customer.payment_status }}</td>
+                    <td>{{ customer.created_at|date:"M d, Y" }}</td>
+                    <td>
+                        <a href="{% url 'customers:detail' customer.id %}" class="btn btn-sm btn-secondary">View</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <p>No customers yet.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

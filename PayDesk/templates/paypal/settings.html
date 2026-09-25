@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}PayPal Settings - PayDesk{% endblock %}
+
+{% block page_title %}PayPal Settings{% endblock %}
+
+{% block content %}
+<div class="section">
+    <h3>PayPal Configuration</h3>
+
+    <form method="post" class="settings-form">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="environment">Environment</label>
+            <select name="environment" id="environment" required>
+                <option value="sandbox" {% if settings.environment == 'sandbox' %}selected{% endif %}>Sandbox</option>
+                <option value="live" {% if settings.environment == 'live' %}selected{% endif %}>Live</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="client_id">Client ID</label>
+            <input type="text" name="client_id" id="client_id" value="{% if settings %}{{ settings.client_id }}{% endif %}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="client_secret">Client Secret</label>
+            <input type="password" name="client_secret" id="client_secret" placeholder="{% if settings %}********{% endif %}" required>
+            <small class="form-hint">For security, the existing secret is not displayed. Enter a new value to update.</small>
+        </div>
+
+        <div class="form-group">
+            <label for="webhook_id">Webhook ID</label>
+            <input type="text" name="webhook_id" id="webhook_id" value="{% if settings %}{{ settings.webhook_id }}{% endif %}">
+        </div>
+
+        <div class="form-group">
+            <label for="currency">Currency</label>
+            <input type="text" name="currency" id="currency" value="{% if settings %}{{ settings.currency }}{% else %}USD{% endif %}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="business_name">Business Name</label>
+            <input type="text" name="business_name" id="business_name" value="{% if settings %}{{ settings.business_name }}{% endif %}">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save Settings</button>
+    </form>
+</div>
+{% endblock %}
